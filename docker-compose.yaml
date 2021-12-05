@@ -9,9 +9,9 @@ services:
           - 8111:80
         environment:
             DB_HOST: db
-            DB_DB: phone
-            DB_USER: phone
-            DB_PASS: phone
+            DB_DB: wordpress
+            DB_USER: wordpress
+            DB_PASS: wordpress
             TZ: Europe/Minsk
         volumes:
           - ./virtualhost/:/etc/apache2/sites-enabled/
@@ -19,7 +19,7 @@ services:
         depends_on:
           - db
         networks:
-          - phoneVol_network
+          - wordpress_network
           
     db:
         image: mysql:5.7
@@ -27,15 +27,15 @@ services:
         ports:
           - 8112:3306
         environment:
-          MYSQL_DATABASE: phone
-          MYSQL_USER: phone 
-          MYSQL_PASSWORD: phone
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress 
+          MYSQL_PASSWORD: wordpress
           MYSQL_ROOT_PASSWORD: root
         volumes:
-          - ./bd/:/docker-entrypoint-initdb.d
-          - PhoneVol:/var/lib/mysql
+          - ./databases/:/docker-entrypoint-initdb.d
+          - wordpress:/var/lib/mysql
         networks:
-          - phoneVol_network
+          - wordpress_network
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
@@ -47,11 +47,11 @@ services:
         depends_on:
           - db
         networks:
-          - phoneVol_network
+          - wordpress_network
           
 networks:
-  phoneVol_network:
+  wordpress_network:
     driver: bridge
 
 volumes:
-  PhoneVol:
+  wordpress:
