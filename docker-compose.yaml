@@ -6,7 +6,7 @@ services:
         image: webdev89/phpdebian
         restart: always
         ports:
-          - 8111:80
+          - 8211:80
         environment:
             DB_HOST: db
             DB_DB: wordpress
@@ -25,7 +25,7 @@ services:
         image: mysql:5.7
         restart: always
         ports:
-          - 8112:3306
+          - 8212:3306
         environment:
           MYSQL_DATABASE: wordpress
           MYSQL_USER: wordpress 
@@ -41,7 +41,7 @@ services:
         image: phpmyadmin/phpmyadmin
         restart: always
         ports: 
-          - 8113:80
+          - 8213:80
         environment:
           PMA_HOST: db
         depends_on:
