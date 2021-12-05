@@ -1,0 +1,57 @@
+version: '3.1'
+
+services:
+    
+    web-server:
+        image: webdev89/phpdebian
+        restart: always
+        ports:
+          - 8111:80
+        environment:
+            DB_HOST: db
+            DB_DB: phone
+            DB_USER: phone
+            DB_PASS: phone
+            TZ: Europe/Minsk
+        volumes:
+          - ./virtualhost/:/etc/apache2/sites-enabled/
+          - ./site/:/var/www/html
+        depends_on:
+          - db
+        networks:
+          - phoneVol_network
+          
+    db:
+        image: mysql:5.7
+        restart: always
+        ports:
+          - 8112:3306
+        environment:
+          MYSQL_DATABASE: phone
+          MYSQL_USER: phone 
+          MYSQL_PASSWORD: phone
+          MYSQL_ROOT_PASSWORD: root
+        volumes:
+          - ./bd/:/docker-entrypoint-initdb.d
+          - PhoneVol:/var/lib/mysql
+        networks:
+          - phoneVol_network
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        restart: always
+        ports: 
+          - 8113:80
+        environment:
+          PMA_HOST: db
+        depends_on:
+          - db
+        networks:
+          - phoneVol_network
+          
+networks:
+  phoneVol_network:
+    driver: bridge
+
+volumes:
+  PhoneVol:
